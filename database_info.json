@@ -1,0 +1,33 @@
+{
+    "source_server" : "source1",
+    "source_schema" : "schema1",
+    "tables" : [
+        {
+            "name" : "customers",
+            "timestamp" : "updated_on",
+            "active" : "active",
+            "pk" : "customer_id",
+            "children" : []
+        },
+        {
+            "name" : "items",
+            "timestamp" : "updated_on",
+            "active" : "active",
+            "pk" : "item_id",
+            "children" : []
+        },
+        {
+            "name" : "orders",
+            "timestamp" : "updated_on",
+            "active" : "active",
+            "pk" : "order_id",
+            "children" : [
+                {
+                    "name" : "orderitems",
+                    "active" : "active",
+                    "pk" : "orderitem_id"
+                }
+            ]
+        }
+    ]
+}
