@@ -1,12 +1,15 @@
 {
     "source_server" : "source1",
     "source_schema" : "schema1",
+    "target_server" : "source1",
+    "target_schema" : "schema1",
     "tables" : [
         {
             "name" : "customers",
             "timestamp" : "updated_on",
             "active" : "active",
             "pk" : "customer_id",
+            "target_table": "customers",
             "children" : []
         },
         {
@@ -14,6 +17,7 @@
             "timestamp" : "updated_on",
             "active" : "active",
             "pk" : "item_id",
+            "target_table": "items",
             "children" : []
         },
         {
@@ -21,11 +25,13 @@
             "timestamp" : "updated_on",
             "active" : "active",
             "pk" : "order_id",
+            "target_table": "orders",
             "children" : [
                 {
                     "name" : "orderitems",
                     "active" : "active",
-                    "pk" : "orderitem_id"
+                    "pk" : "orderitem_id",
+                    "target_table": "orderitems"
                 }
             ]
         }
