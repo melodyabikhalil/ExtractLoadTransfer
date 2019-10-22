@@ -46,12 +46,29 @@ def insert_update_query(record, target_conx, target_table, pk):
     target_result = cursor.fetchAll()
     query = "" 
     if len(target_result) >0 :
-        query = "UPDATE "+target_table+" SET "+"WHERE "+pk+" = "+record[0]
+        query = prepare_update_query(target_table, record)
     else :
-        query = "INSERT "
+        query = prepare_insert_query(target_table, record, pk, record[0])
     cursor.execute(query)
     
-
+def prepare_insert_query(table_name, record):
+    query = "INSERT INTO " + table_name+ " ("
+    for (k, v) in record:
+        query += k+","
+    query[-1] = ")"
+    query += " VALUES ("
+    for (k, v) in record:
+        query += v+","
+    query[-1] = ")"
+    return query
+    
+def prepare_update_query(table_name, record, pk_name, pk_value):
+    query = "UPDATE " + table_name+ " SET "
+    for (k, v) in record:
+        query += k+"="+v+","
+    query[-1] = " WHERE "+pk_name+pk_value
+    return query
+    
 def open_file(file_name):
     with open(file_name) as f:
         data = json.load(f)
