@@ -83,9 +83,12 @@ def get_current_datetime(source_conx):
 def main():
     database_info = open_file("database_info.json")
     last_runtimes = open_file("last_runtimes.json")
+    user = "postgre"
+    password = "postgre"
+    port = 3542
     
-    source_conx = db_connection()
-    target_conx = db_connection()
+    source_conx = db_connection(user, password, database_info["source_server"], port, database_info["source_schema"])
+    target_conx = db_connection(user, password, database_info["target_server"], port, database_info["target_schema"])
 
     source_cursor = source_conx.cursor()
     target_cursor = target_conx.cursor()
