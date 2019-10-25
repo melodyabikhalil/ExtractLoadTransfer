@@ -19,7 +19,7 @@ def db_connection(user,password,host,port,database):
         print(record[0])
         return connection
     except (Exception, psycopg2.Error) as error :
-        print ("Error while connecting to PostgreSQL", error)
+        print ("Error while connecting to  ", error)
 
 def db_close(connection):
     connection.cursor().close()
@@ -149,20 +149,21 @@ def main():
  
         records = select_query_timestamp(source_conx, table_name, table["timestamp"], json_last_runtimes[table_name], now)
         # Initial call to print 0% progress
-        l = len(records) + 1
-        printProgressBar(1, l, prefix = table_name+':', suffix = 'records', decimals = 0, length = 50)
+        l = len(records)
+        printProgressBar(0, l+1, prefix = table_name+':', suffix = 'records', decimals = 0, length = 50)
         columns = get_columns(source_conx, table_name)
         table["columns"] = columns 
         i = 0
         for record in records:
             i = i + 1
-            printProgressBar(i+1, l, prefix = table_name+':', suffix = 'records', decimals = 0, length = 50)
+            printProgressBar(i, l, prefix = table_name+':', suffix = 'records', decimals = 0, length = 50)
             insert_update_query(record, target_conx, table['target_table'], table["pk"], columns)
             for child in table["children"]:
                 child_records = select_query_pk(source_conx, child["name"], child["fk"], record)
                 child_columns = get_columns(source_conx, child["target_table"])
                 for child_record in child_records:
                     insert_update_query(child_record, target_conx, child["target_table"], child["pk"], child_columns)
+        print()
         json_last_runtimes[table_name] = now
         write_file("./database_info.json", json_database_info)
         write_file("./last_runtimes.json", json_last_runtimes)
@@ -189,7 +190,7 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     bar = fill * filledLength + '-' * (length - filledLength)
     print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix + ' --> ' + str(iteration)), end = printEnd)
     # Print New Line on Complete
-    if iteration == total: 
-        print()
+    #if iteration == total: 
+        #print()
 
 main()
