@@ -1,4 +1,4 @@
-# ExtractLoadTransfer
+# Extract Load Transfer
 
 ## About
 This project copies the data from database A to database B. 
